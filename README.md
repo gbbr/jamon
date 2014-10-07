@@ -1,4 +1,7 @@
-## jamon
+_WORK IN PROGRESS_
+
+
+## jamon 
 
 Jamon is a delicious configuration file parser to be used with your application. A configuration file may look like this:
 
