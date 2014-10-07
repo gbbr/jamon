@@ -39,9 +39,8 @@ func Load(filename string) (Config, error) {
 		case isCategory:
 			currentCategory = value
 			continue
-		}
 
-		if config[currentCategory] == nil {
+		case config[currentCategory] == nil:
 			config[currentCategory] = make(Category)
 		}
 
