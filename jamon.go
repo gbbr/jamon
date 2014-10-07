@@ -91,7 +91,7 @@ func parseLine(line string) (isCategory bool, value, key string, skip bool) {
 // Returns the value of a key that is not in any category. These keys should
 // be placed at the top of the file with no title if desired.
 func (c Config) Get(key string) string {
-	category, ok := c["JAMON.NO_CATEGORY"]
+	category, ok := c[defaultCategory]
 	if !ok {
 		return ""
 	}
