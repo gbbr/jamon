@@ -12,6 +12,9 @@ type Config map[string]Category
 // A category holds key-value pairs of settings
 type Category map[string]string
 
+// Internal name for category that holds settings without one
+const defaultCategory = "JAMON.NO_CATEGORY"
+
 // Loads a configuration file
 func Load(filename string) (Config, error) {
 	file, err := os.Open(filename)
@@ -19,18 +22,19 @@ func Load(filename string) (Config, error) {
 		return Config{}, err
 	}
 
-	fr := bufio.NewReader(file)
+	defer file.Close()
 
+	reader := bufio.NewReader(file)
 	config := Config{}
-	currentCategory := "JAMON.NO_CATEGORY"
+	currentCategory := defaultCategory
 
 	for {
-		line_bytes, _, err := fr.ReadLine()
+		line, _, err := reader.ReadLine()
 		if err != nil {
 			break
 		}
 
-		isCategory, value, key, skip := parseLine(string(line_bytes))
+		isCategory, value, key, skip := parseLine(string(line))
 
 		switch {
 		case skip:
@@ -54,7 +58,8 @@ func Load(filename string) (Config, error) {
 // Attempts to parse an entry in the config file. The first return value specifies
 // whether 'value' is the name of a category or the value of a key.
 func parseLine(line string) (isCategory bool, value, key string, skip bool) {
-	line = strings.Trim(strings.SplitN(line, "#", 2)[0], " \t\r\n")
+	line = strings.SplitN(line, "#", 2)[0]
+	line = strings.Trim(line, " \t\r")
 
 	// Is comment?
 	if strings.HasPrefix(line, "#") || len(line) == 0 {
