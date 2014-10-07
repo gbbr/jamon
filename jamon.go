@@ -42,9 +42,10 @@ func Load(filename string) (Config, error) {
 
 		case config[currentCategory] == nil:
 			config[currentCategory] = make(Category)
+			fallthrough
+		default:
+			config[currentCategory][key] = value
 		}
-
-		config[currentCategory][key] = value
 	}
 
 	return config, nil
