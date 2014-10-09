@@ -29,18 +29,18 @@ type Category map[string]string
 // Internal name for category that holds settings at root-level
 const defaultCategory = "JAMON.NO_CATEGORY"
 
-// Returns the value of a key that is not in any category. These keys should
-// be placed at the top of the file with no title if desired.
+// Returns the value of a root-level key
 func (c Config) Get(key string) string { return c[defaultCategory].Get(key) }
 
-// Verifies if a key is available in the "no category" section
+// Verifies the existence of a root-level key
 func (c Config) HasKey(key string) bool {
 	_, ok := c[defaultCategory][key]
 	return ok
 }
 
 // Returns a category by name. If the category does not exist, an empty category
-// is returned. Errors are not returned here in order to allow chaining.
+// is returned. This is to avoid multiple return values in order to facilitate
+// chaining.
 func (c Config) Category(name string) Category { return c[name] }
 
 // Verifies if a category exists
@@ -99,13 +99,14 @@ func Load(filename string) (Config, error) {
 }
 
 // Attempts to parse an entry in the config file. The first return value specifies
-// whether 'value' is the name of a category or the value of a key.
+// whether 'value' is the name of a category or the value of a key. Skip indicates
+// whether the line was a comment or could not be parsed.
 func parseLine(line string) (isCategory bool, value, key string, skip bool) {
 	line = strings.SplitN(line, "#", 2)[0]
 	line = strings.Trim(line, " \t\r")
 
-	// Is comment?
-	if strings.HasPrefix(line, "#") || len(line) == 0 {
+	// Is comment or empty line?
+	if len(line) == 0 {
 		skip = true
 		return
 	}
@@ -117,14 +118,13 @@ func parseLine(line string) (isCategory bool, value, key string, skip bool) {
 		return
 	}
 
-	// Attempt to parse key/value pair
+	// Is key/value pair?
 	parts := strings.SplitN(line, "=", 2)
 	if len(parts) < 2 {
 		skip = true
 		return
 	}
 
-	// Trim end-of-line comments
 	key = parts[0]
 	value = strings.TrimRight(parts[1], " ")
 
