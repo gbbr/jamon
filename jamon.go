@@ -1,3 +1,17 @@
+/*
+Package Jamon is an INI-like configuration file parser. An example configuration
+file may look like this:
+	address = 127.0.0.1:1234 # root-level values
+
+	[defaults]
+	key=value
+	name=Gabriel
+
+	[category]
+	key=value
+Trailing comments are also allowed, and root-level keys are only accepted at the
+top of the file
+*/
 package jamon
 
 import (
@@ -12,8 +26,37 @@ type Config map[string]Category
 // A category holds key-value pairs of settings
 type Category map[string]string
 
-// Internal name for category that holds settings without one
+// Internal name for category that holds settings at root-level
 const defaultCategory = "JAMON.NO_CATEGORY"
+
+// Returns the value of a key that is not in any category. These keys should
+// be placed at the top of the file with no title if desired.
+func (c Config) Get(key string) string { return c[defaultCategory].Get(key) }
+
+// Verifies if a key is available in the "no category" section
+func (c Config) HasKey(key string) bool {
+	_, ok := c[defaultCategory][key]
+	return ok
+}
+
+// Verifies if a category exists
+func (c Config) HasCategory(category string) bool {
+	_, ok := c[category]
+	return ok
+}
+
+// Returns a category by name. If the category does not exist, an empty category
+// is returned. Errors are not returned here in order to allow chaining.
+func (c Config) Category(name string) Category { return c[name] }
+
+// Returns a key from a category
+func (c Category) Get(key string) string { return c[key] }
+
+// Verifies if the category has a key
+func (c Category) HasKey(key string) bool {
+	_, ok := c[key]
+	return ok
+}
 
 // Loads a configuration file
 func Load(filename string) (Config, error) {
@@ -86,33 +129,4 @@ func parseLine(line string) (isCategory bool, value, key string, skip bool) {
 	value = strings.TrimRight(parts[1], " ")
 
 	return
-}
-
-// Returns the value of a key that is not in any category. These keys should
-// be placed at the top of the file with no title if desired.
-func (c Config) Get(key string) string { return c[defaultCategory].Get(key) }
-
-// Verifies if a key is available in the "no category" section
-func (c Config) HasKey(key string) bool {
-	_, ok := c[defaultCategory][key]
-	return ok
-}
-
-// Verifies if a category exists
-func (c Config) HasCategory(category string) bool {
-	_, ok := c[category]
-	return ok
-}
-
-// Returns a category by name. If the category does not exist, an empty category
-// is returned. Errors are not returned here in order to allow chaining.
-func (c Config) Category(name string) Category { return c[name] }
-
-// Returns a key from a category
-func (c Category) Get(key string) string { return c[key] }
-
-// Verifies if the category has a key
-func (c Category) HasKey(key string) bool {
-	_, ok := c[key]
-	return ok
 }
