@@ -9,10 +9,10 @@ address=127.0.0.1:123
 user=gabriel
 email=ga@stripetree.co.uk
 
-# This category is important
+# Comments use hash symbol
 [category]
 long.key=given_value
-name.space.key=value with spaces # Trailing comment
+name.space.key=value with spaces # Long key
 ```
 
 Categories are optional. You can have key/value pairs with no categories at the beginning of your configuration file.
@@ -29,4 +29,15 @@ config.Category("my_category").Get("my_key")
 
 // For non-categorized keys:
 config.Get("my_key")
+```
+
+Key & category getters do not return errors to allow chainability. If you specifically want to check whether a value exist boolean functions are provided, such as:
+
+```go
+// For root level
+config.HasCategory("category_name")
+config.HasKey("key_name")
+
+// For categories
+config.Category("defaults").HasKey("key_name")
 ```
