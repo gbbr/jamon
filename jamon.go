@@ -1,7 +1,7 @@
 /*
 Package Jamon is an INI-like configuration file parser. An example configuration
 file may look like this:
-	address = 127.0.0.1:1234 # root-level values
+	address=127.0.0.1:1234 # root-level values
 
 	[defaults]
 	key=value
