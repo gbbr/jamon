@@ -2,7 +2,7 @@
 
 Jamon is a delicious configuration file parser to be used with your application. A configuration file may look like this:
 
-```asciidoc
+```markdown
 address=127.0.0.1:123
 
 [defaults]
