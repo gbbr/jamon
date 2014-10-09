@@ -17,6 +17,8 @@ name.space.key=value with spaces
 
 Categories are optional. You can have key/value pairs with no categories at the beginning of your configuration file. Comments can also be trailing and are allowed after key's values (ie. `key=value # Trailing comment`)
 
+All keys and values are strings by default, if you need to convert to other types, use the amazing [strconv](http://golang.org/pkg/strconv/) package from Go's standard library.
+
 #### Usage
 
 To load a configuration file:
