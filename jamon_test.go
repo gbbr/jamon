@@ -121,3 +121,65 @@ func TestJamon_parseLine(t *testing.T) {
 		}
 	}
 }
+
+func TestJamon_Getters(t *testing.T) {
+	testConfig := &Config{
+		defaultCategory: Category{
+			"A": "B",
+			"C": "D",
+		},
+		"category.a": Category{
+			"key":  "value",
+			"key2": "value2",
+		},
+		"category.b": Category{
+			"k":   "v",
+			"k.2": "v.2",
+		},
+	}
+
+	// Category getters
+	equality(t, testConfig.Category("category.a"), Category{
+		"key":  "value",
+		"key2": "value2",
+	})
+
+	equality(t, testConfig.Category("category.b"), Category{
+		"k":   "v",
+		"k.2": "v.2",
+	})
+
+	// Inexistent categories and keys are empty values
+	equality(t, reflect.TypeOf(testConfig.Category("inexistent")).Name(), "Category")
+	equality(t, len(testConfig.Category("inexistent")), 0)
+	equality(t, testConfig.Get("inexistent_key"), "")
+	equality(t, testConfig.Category("inexistent_cat").Get("inexistent_key"), "")
+
+	// Default category value getters
+	equality(t, testConfig.Get("A"), "B")
+	equality(t, testConfig.Get("C"), "D")
+
+	// Category value getters
+	equality(t, testConfig.Category("category.a").Get("key"), "value")
+	equality(t, testConfig.Category("category.a").Get("key2"), "value2")
+	equality(t, testConfig.Category("category.a").Get("key"), "value")
+	equality(t, testConfig.Category("category.a").Get("key2"), "value2")
+
+	// Has functions
+	equality(t, true, testConfig.HasKey("A"))
+	equality(t, false, testConfig.HasKey("X"))
+	equality(t, true, testConfig.HasCategory("category.a"))
+	equality(t, true, testConfig.HasCategory("category.b"))
+	equality(t, false, testConfig.HasCategory("category.X"))
+
+	equality(t, true, testConfig.Category("category.b").HasKey("k.2"))
+	equality(t, false, testConfig.Category("category.b").HasKey("k.X"))
+	equality(t, false, testConfig.Category("category.X").HasKey("k.X"))
+}
+
+// Tests for deep equality
+func equality(t *testing.T, a, b interface{}) {
+	if !reflect.DeepEqual(a, b) {
+		t.Errorf("Values %+v and %+v not equal.", a, b)
+	}
+}

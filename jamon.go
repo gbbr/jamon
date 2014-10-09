@@ -90,13 +90,18 @@ func parseLine(line string) (isCategory bool, value, key string, skip bool) {
 
 // Returns the value of a key that is not in any category. These keys should
 // be placed at the top of the file with no title if desired.
-func (c Config) Get(key string) string {
-	category, ok := c[defaultCategory]
-	if !ok {
-		return ""
-	}
+func (c Config) Get(key string) string { return c[defaultCategory].Get(key) }
 
-	return category.Get(key)
+// Verifies if a key is available in the "no category" section
+func (c Config) HasKey(key string) bool {
+	_, ok := c[defaultCategory][key]
+	return ok
+}
+
+// Verifies if a category exists
+func (c Config) HasCategory(category string) bool {
+	_, ok := c[category]
+	return ok
 }
 
 // Returns a category by name. If the category does not exist, an empty category
@@ -105,3 +110,9 @@ func (c Config) Category(name string) Category { return c[name] }
 
 // Returns a key from a category
 func (c Category) Get(key string) string { return c[key] }
+
+// Verifies if the category has a key
+func (c Category) HasKey(key string) bool {
+	_, ok := c[key]
+	return ok
+}
