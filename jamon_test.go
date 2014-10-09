@@ -161,6 +161,7 @@ func TestJamon_Getters(t *testing.T) {
 	equality(t, len(testConfig.Category("inexistent")), 0)
 	equality(t, testConfig.Get("inexistent_key"), "")
 	equality(t, testConfig.Category("inexistent_cat").Get("inexistent_key"), "")
+	equality(t, testConfig.Category("category.b").Get("inexistent_key"), "")
 
 	// Default category value getters
 	equality(t, testConfig.Get("A"), "B")

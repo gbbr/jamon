@@ -39,15 +39,15 @@ func (c Config) HasKey(key string) bool {
 	return ok
 }
 
+// Returns a category by name. If the category does not exist, an empty category
+// is returned. Errors are not returned here in order to allow chaining.
+func (c Config) Category(name string) Category { return c[name] }
+
 // Verifies if a category exists
 func (c Config) HasCategory(category string) bool {
 	_, ok := c[category]
 	return ok
 }
-
-// Returns a category by name. If the category does not exist, an empty category
-// is returned. Errors are not returned here in order to allow chaining.
-func (c Config) Category(name string) Category { return c[name] }
 
 // Returns a key from a category
 func (c Category) Get(key string) string { return c[key] }
