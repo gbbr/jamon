@@ -12,7 +12,7 @@ email=ga@stripetree.co.uk
 # Comments use hash symbol
 [routes]
 api.users=/users
-api.register=/users/register
+api.view=/users/view
 ```
 
 Categories are optional. You can have key/value pairs with no categories at the beginning of your configuration file. Comments can also be trailing and are allowed after key's values (ie. `key=value # Trailing comment`)
