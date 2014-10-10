@@ -10,9 +10,9 @@ user=gabriel
 email=ga@stripetree.co.uk
 
 # Comments use hash symbol
-[category]
-key=given_value
-name.space.key=value with spaces
+[routes]
+api.users=/users
+api.register=/users/register
 ```
 
 Categories are optional. You can have key/value pairs with no categories at the beginning of your configuration file. Comments can also be trailing and are allowed after key's values (ie. `key=value # Trailing comment`)
