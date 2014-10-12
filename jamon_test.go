@@ -29,12 +29,14 @@ key2=value2`,
 [defaults]
 subst=my
 key=${subst}/val
-key2=value2`,
+key2=value2
+key3=12${3}4`,
 			expected: Config{
 				"defaults": Group{
 					"subst": "my",
 					"key":   "my/val",
 					"key2":  "value2",
+					"key3":  "12${3}4",
 				},
 			},
 		}, {
