@@ -7,7 +7,7 @@ file may look like this:
 	key=value
 	name=Gabriel
 
-	[category]
+	[Group]
 	key=value
 Trailing comments are also allowed, and root-level keys are only accepted at the
 top of the file
@@ -21,39 +21,39 @@ import (
 )
 
 // A configuration type may hold multiple categories of settings
-type Config map[string]Category
+type Config map[string]Group
 
-// A category holds key-value pairs of settings
-type Category map[string]string
+// A group holds key-value pairs of settings
+type Group map[string]string
 
-// Internal name for category that holds settings at root-level
-const defaultCategory = "JAMON.NO_CATEGORY"
+// Internal name for group that holds settings at root-level
+const defaultGroup = "JAMON.ROOT_GROUP"
 
 // Returns the value of a root-level key
-func (c Config) Get(key string) string { return c[defaultCategory].Get(key) }
+func (c Config) Get(key string) string { return c[defaultGroup].Get(key) }
 
 // Verifies the existence of a root-level key
 func (c Config) HasKey(key string) bool {
-	_, ok := c[defaultCategory][key]
+	_, ok := c[defaultGroup][key]
 	return ok
 }
 
-// Returns a category by name. If the category does not exist, an empty category
+// Returns a group by name. If the group does not exist, an empty category
 // is returned. This is to avoid multiple return values in order to facilitate
 // chaining.
-func (c Config) Category(name string) Category { return c[name] }
+func (c Config) Group(name string) Group { return c[name] }
 
 // Verifies if a category exists
-func (c Config) HasCategory(category string) bool {
+func (c Config) HasGroup(category string) bool {
 	_, ok := c[category]
 	return ok
 }
 
 // Returns a key from a category
-func (c Category) Get(key string) string { return c[key] }
+func (c Group) Get(key string) string { return c[key] }
 
 // Verifies if the category has a key
-func (c Category) HasKey(key string) bool {
+func (c Group) HasKey(key string) bool {
 	_, ok := c[key]
 	return ok
 }
@@ -69,7 +69,7 @@ func Load(filename string) (Config, error) {
 
 	reader := bufio.NewReader(file)
 	config := Config{}
-	currentCategory := defaultCategory
+	currentGroup := defaultGroup
 
 	for {
 		line, _, err := reader.ReadLine()
@@ -77,21 +77,21 @@ func Load(filename string) (Config, error) {
 			break
 		}
 
-		isCategory, value, key, skip := parseLine(string(line))
+		isGroup, value, key, skip := parseLine(string(line))
 
 		switch {
 		case skip:
 			continue
 
-		case isCategory:
-			currentCategory = value
+		case isGroup:
+			currentGroup = value
 			continue
 
-		case config[currentCategory] == nil:
-			config[currentCategory] = make(Category)
+		case config[currentGroup] == nil:
+			config[currentGroup] = make(Group)
 			fallthrough
 		default:
-			config[currentCategory][key] = value
+			config[currentGroup][key] = value
 		}
 	}
 
@@ -101,7 +101,7 @@ func Load(filename string) (Config, error) {
 // Attempts to parse an entry in the config file. The first return value specifies
 // whether 'value' is the name of a category or the value of a key. Skip indicates
 // whether the line was a comment or could not be parsed.
-func parseLine(line string) (isCategory bool, value, key string, skip bool) {
+func parseLine(line string) (isGroup bool, value, key string, skip bool) {
 	line = strings.SplitN(line, "#", 2)[0]
 	line = strings.Trim(line, " \t\r")
 
@@ -113,7 +113,7 @@ func parseLine(line string) (isCategory bool, value, key string, skip bool) {
 
 	// Is category?
 	if strings.HasPrefix(line, "[") && strings.HasSuffix(line, "]") {
-		isCategory = true
+		isGroup = true
 		value = strings.Trim(line, "[]")
 		return
 	}

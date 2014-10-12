@@ -27,7 +27,7 @@ To load a configuration file:
 config := jamon.Load("filename.config")
 
 // For categorized keys:
-config.Category("defaults").Get("user")
+config.Group("defaults").Get("user")
 
 // For root-level keys:
 config.Get("address")
@@ -37,9 +37,9 @@ Key & category getters do not return errors to allow chainability. If you specif
 
 ```go
 // For root level
-config.HasCategory("category_name")
+config.HasGroup("category_name")
 config.HasKey("key_name")
 
 // For categories
-config.Category("defaults").HasKey("key_name")
+config.Group("defaults").HasKey("key_name")
 ```

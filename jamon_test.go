@@ -19,7 +19,7 @@ func TestJamon_Load(t *testing.T) {
 key=value
 key2=value2`,
 			expected: Config{
-				"defaults": Category{
+				"defaults": Group{
 					"key":  "value",
 					"key2": "value2",
 				},
@@ -41,15 +41,15 @@ key2=value2
 a=b
 c=d`,
 			expected: Config{
-				"JAMON.NO_CATEGORY": Category{
+				defaultGroup: Group{
 					"floating": "pairs",
 					"of":       "keys",
 				},
-				"custom": Category{
+				"custom": Group{
 					"a": "b",
 					"c": "d",
 				},
-				"defaults": Category{
+				"defaults": Group{
 					"key":  "value",
 					"key2": "value2",
 				},
@@ -89,7 +89,7 @@ func TestJamon_Load_Error(t *testing.T) {
 func TestJamon_parseLine(t *testing.T) {
 	testSuite := []struct {
 		input      string
-		isCategory bool
+		isGroup    bool
 		value, key string
 		hasError   bool
 	}{
@@ -119,70 +119,70 @@ func TestJamon_parseLine(t *testing.T) {
 	}
 
 	for _, test := range testSuite {
-		isCategory, value, key, skip := parseLine(test.input)
+		isGroup, value, key, skip := parseLine(test.input)
 
-		if isCategory != test.isCategory || value != test.value || key != test.key || skip != test.hasError {
+		if isGroup != test.isGroup || value != test.value || key != test.key || skip != test.hasError {
 			t.Errorf("On '%s' expected category '%t', value '%s', key '%s', but got: "+
-				"'%t', '%s', '%s' and err '%s'", test.input, test.isCategory, test.value, test.key,
-				isCategory, value, key, skip)
+				"'%t', '%s', '%s' and err '%s'", test.input, test.isGroup, test.value, test.key,
+				isGroup, value, key, skip)
 		}
 	}
 }
 
 func TestJamon_Getters(t *testing.T) {
 	testConfig := &Config{
-		defaultCategory: Category{
+		defaultGroup: Group{
 			"A": "B",
 			"C": "D",
 		},
-		"category.a": Category{
+		"category.a": Group{
 			"key":  "value",
 			"key2": "value2",
 		},
-		"category.b": Category{
+		"category.b": Group{
 			"k":   "v",
 			"k.2": "v.2",
 		},
 	}
 
-	// Category getters
-	equality(t, testConfig.Category("category.a"), Category{
+	// Group getters
+	equality(t, testConfig.Group("category.a"), Group{
 		"key":  "value",
 		"key2": "value2",
 	})
 
-	equality(t, testConfig.Category("category.b"), Category{
+	equality(t, testConfig.Group("category.b"), Group{
 		"k":   "v",
 		"k.2": "v.2",
 	})
 
 	// Inexistent categories and keys are empty values
-	equality(t, reflect.TypeOf(testConfig.Category("inexistent")).Name(), "Category")
-	equality(t, len(testConfig.Category("inexistent")), 0)
+	equality(t, reflect.TypeOf(testConfig.Group("inexistent")).Name(), "Group")
+	equality(t, len(testConfig.Group("inexistent")), 0)
 	equality(t, testConfig.Get("inexistent_key"), "")
-	equality(t, testConfig.Category("inexistent_cat").Get("inexistent_key"), "")
-	equality(t, testConfig.Category("category.b").Get("inexistent_key"), "")
+	equality(t, testConfig.Group("inexistent_cat").Get("inexistent_key"), "")
+	equality(t, testConfig.Group("category.b").Get("inexistent_key"), "")
 
 	// Default category value getters
 	equality(t, testConfig.Get("A"), "B")
 	equality(t, testConfig.Get("C"), "D")
 
-	// Category value getters
-	equality(t, testConfig.Category("category.a").Get("key"), "value")
-	equality(t, testConfig.Category("category.a").Get("key2"), "value2")
-	equality(t, testConfig.Category("category.a").Get("key"), "value")
-	equality(t, testConfig.Category("category.a").Get("key2"), "value2")
+	// Group value getters
+	equality(t, testConfig.Group("category.a").Get("key"), "value")
+	equality(t, testConfig.Group("category.a").Get("key2"), "value2")
+	equality(t, testConfig.Group("category.a").Get("key"), "value")
+	equality(t, testConfig.Group("category.a").Get("key2"), "value2")
 
 	// Has functions
 	equality(t, true, testConfig.HasKey("A"))
 	equality(t, false, testConfig.HasKey("X"))
-	equality(t, true, testConfig.HasCategory("category.a"))
-	equality(t, true, testConfig.HasCategory("category.b"))
-	equality(t, false, testConfig.HasCategory("category.X"))
+	equality(t, true, testConfig.HasGroup("category.a"))
+	equality(t, true, testConfig.HasGroup("category.b"))
+	equality(t, false, testConfig.HasGroup("category.X"))
 
-	equality(t, true, testConfig.Category("category.b").HasKey("k.2"))
-	equality(t, false, testConfig.Category("category.b").HasKey("k.X"))
-	equality(t, false, testConfig.Category("category.X").HasKey("k.X"))
+	equality(t, true, testConfig.Group("category.b").HasKey("k.2"))
+	equality(t, false, testConfig.Group("category.b").HasKey("k.X"))
+	equality(t, false, testConfig.Group("category.X").HasKey("k.X"))
 }
 
 // Tests for deep equality
