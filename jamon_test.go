@@ -77,6 +77,40 @@ key2=value2`,
 			},
 		}, {
 			contents: `
+ip=127.0.0.1
+port=23
+address=${ip}:${port}
+
+[service]
+address=${ip}:222
+dest=${address}/get
+
+[service2]
+address=${address}/new
+override=${address}/local
+
+[service3]
+reset=${address}/rset`,
+			expected: Config{
+				defaultGroup: Group{
+					"ip":      "127.0.0.1",
+					"port":    "23",
+					"address": "127.0.0.1:23",
+				},
+				"service": Group{
+					"address": "127.0.0.1:222",
+					"dest":    "127.0.0.1:222/get",
+				},
+				"service2": Group{
+					"address":  "127.0.0.1:23/new",
+					"override": "127.0.0.1:23/new/local",
+				},
+				"service3": Group{
+					"reset": "127.0.0.1:23/rset",
+				},
+			},
+		}, {
+			contents: `
 subst=my
 
 [defaults]
