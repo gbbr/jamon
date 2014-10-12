@@ -26,6 +26,53 @@ key2=value2`,
 			},
 		}, {
 			contents: `
+[defaults]
+subst=my
+key=${subst}/val
+key2=value2`,
+			expected: Config{
+				"defaults": Group{
+					"subst": "my",
+					"key":   "my/val",
+					"key2":  "value2",
+				},
+			},
+		}, {
+			contents: `
+subst=my
+
+[defaults]
+key=${subst}/val
+key2=value2`,
+			expected: Config{
+				defaultGroup: Group{
+					"subst": "my",
+				},
+				"defaults": Group{
+					"key":  "my/val",
+					"key2": "value2",
+				},
+			},
+		}, {
+			contents: `
+subst=my
+
+[defaults]
+subst=priority
+key=my/${subst}/val
+key2=value2`,
+			expected: Config{
+				defaultGroup: Group{
+					"subst": "my",
+				},
+				"defaults": Group{
+					"subst": "priority",
+					"key":   "my/priority/val",
+					"key2":  "value2",
+				},
+			},
+		}, {
+			contents: `
 floating=pairs
 of=keys # with a comment
 
