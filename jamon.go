@@ -71,17 +71,12 @@ func Load(filename string) (Config, error) {
 
 	defer file.Close()
 
-	reader := bufio.NewReader(file)
+	scanner := bufio.NewScanner(file)
 	config := Config{}
 	currentGroup := defaultGroup
 
-	for {
-		line, _, err := reader.ReadLine()
-		if err != nil {
-			break
-		}
-
-		isGroup, value, key, skip := parseLine(string(line))
+	for scanner.Scan() {
+		isGroup, value, key, skip := parseLine(scanner.Text())
 
 		switch {
 		case skip:
