@@ -49,6 +49,7 @@ key3=12${3}4`,
 [defaults]
 subst=my
 key=${subst}/val
+key5=${subst}/val2
 key2=value2
 key3=12${3}4`,
 			expected: Config{
@@ -57,6 +58,7 @@ key3=12${3}4`,
 					"key":   "my/val",
 					"key2":  "value2",
 					"key3":  "12${3}4",
+					"key5":  "my/val2",
 				},
 			},
 		}, {
