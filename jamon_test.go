@@ -159,19 +159,19 @@ func TestJamon_Getters(t *testing.T) {
 	// Inexistent categories and keys are empty values
 	equality(t, reflect.TypeOf(testConfig.Group("inexistent")).Name(), "Group")
 	equality(t, len(testConfig.Group("inexistent")), 0)
-	equality(t, testConfig.Get("inexistent_key"), "")
-	equality(t, testConfig.Group("inexistent_cat").Get("inexistent_key"), "")
-	equality(t, testConfig.Group("category.b").Get("inexistent_key"), "")
+	equality(t, testConfig.Key("inexistent_key"), "")
+	equality(t, testConfig.Group("inexistent_cat").Key("inexistent_key"), "")
+	equality(t, testConfig.Group("category.b").Key("inexistent_key"), "")
 
 	// Default category value getters
-	equality(t, testConfig.Get("A"), "B")
-	equality(t, testConfig.Get("C"), "D")
+	equality(t, testConfig.Key("A"), "B")
+	equality(t, testConfig.Key("C"), "D")
 
 	// Group value getters
-	equality(t, testConfig.Group("category.a").Get("key"), "value")
-	equality(t, testConfig.Group("category.a").Get("key2"), "value2")
-	equality(t, testConfig.Group("category.a").Get("key"), "value")
-	equality(t, testConfig.Group("category.a").Get("key2"), "value2")
+	equality(t, testConfig.Group("category.a").Key("key"), "value")
+	equality(t, testConfig.Group("category.a").Key("key2"), "value2")
+	equality(t, testConfig.Group("category.a").Key("key"), "value")
+	equality(t, testConfig.Group("category.a").Key("key2"), "value2")
 
 	// Has functions
 	equality(t, true, testConfig.HasKey("A"))

@@ -30,7 +30,7 @@ type Group map[string]string
 const defaultGroup = "JAMON.ROOT_GROUP"
 
 // Returns the value of a root-level key
-func (c Config) Get(key string) string { return c[defaultGroup].Get(key) }
+func (c Config) Key(key string) string { return c[defaultGroup].Key(key) }
 
 // Verifies the existence of a root-level key
 func (c Config) HasKey(key string) bool {
@@ -50,7 +50,7 @@ func (c Config) HasGroup(category string) bool {
 }
 
 // Returns a key from a category
-func (c Group) Get(key string) string { return c[key] }
+func (c Group) Key(key string) string { return c[key] }
 
 // Verifies if the category has a key
 func (c Group) HasKey(key string) bool {
