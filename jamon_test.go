@@ -78,8 +78,8 @@ key2=value2`,
 		}, {
 			contents: `
 ip=127.0.0.1
-port=23
-address=${ip}:${port}
+po.rt=23
+address=${ip}:${po.rt}
 
 [service]
 address=${ip}:222
@@ -94,7 +94,7 @@ reset=${address}/rset`,
 			expected: Config{
 				defaultGroup: Group{
 					"ip":      "127.0.0.1",
-					"port":    "23",
+					"po.rt":   "23",
 					"address": "127.0.0.1:23",
 				},
 				"service": Group{
