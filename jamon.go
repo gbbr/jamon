@@ -17,6 +17,7 @@ package jamon
 import (
 	"bufio"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -28,6 +29,9 @@ type Group map[string]string
 
 // Internal name for group that holds settings at root-level
 const defaultGroup = "JAMON.ROOT_GROUP"
+
+// Regexp for substitions
+var regexSubst = regexp.MustCompile(`\$\{(.*)\}`)
 
 // Returns the value of a root-level key
 func (c Config) Key(key string) string { return c[defaultGroup].Key(key) }
@@ -95,7 +99,30 @@ func Load(filename string) (Config, error) {
 		}
 	}
 
-	return config, nil
+	return compile(config), nil
+}
+
+// Compiles the values of a configuration
+func compile(c Config) Config {
+	for group, values := range c {
+		for key, val := range values {
+			c[group][key] = regexSubst.ReplaceAllStringFunc(val, func(r string) string {
+				k := r[2 : len(r)-1]
+
+				if _, ok := c[group][k]; ok {
+					return c[group][k]
+				}
+
+				if _, ok := c[defaultGroup][k]; ok {
+					return c[defaultGroup][k]
+				}
+
+				return r
+			})
+		}
+	}
+
+	return c
 }
 
 // Attempts to parse an entry in the config file. The first return value specifies

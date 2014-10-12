@@ -1,6 +1,7 @@
 package jamon
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"reflect"
@@ -183,6 +184,15 @@ func TestJamon_Getters(t *testing.T) {
 	equality(t, true, testConfig.Group("category.b").HasKey("k.2"))
 	equality(t, false, testConfig.Group("category.b").HasKey("k.X"))
 	equality(t, false, testConfig.Group("category.X").HasKey("k.X"))
+}
+
+func TestJamon_compile(t *testing.T) {
+	fmt.Println(compile(Config{
+		defaultGroup: {
+			"ASD": "X",
+			"QWE": "a ${ASD} x",
+		},
+	}))
 }
 
 // Tests for deep equality
