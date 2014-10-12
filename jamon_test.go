@@ -26,6 +26,26 @@ key2=value2`,
 			},
 		}, {
 			contents: `
+other=/sun
+
+[defaults]
+subst=my
+key=${subst}${other}/val
+key2=value2
+key3=12${3}4`,
+			expected: Config{
+				defaultGroup: Group{
+					"other": "/sun",
+				},
+				"defaults": Group{
+					"subst": "my",
+					"key":   "my/sun/val",
+					"key2":  "value2",
+					"key3":  "12${3}4",
+				},
+			},
+		}, {
+			contents: `
 [defaults]
 subst=my
 key=${subst}/val

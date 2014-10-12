@@ -31,7 +31,7 @@ type Group map[string]string
 const defaultGroup = "JAMON.ROOT_GROUP"
 
 // Regexp for substitions
-var regexSubst = regexp.MustCompile(`\$\{(.*)\}`)
+var regexSubst = regexp.MustCompile(`\$\{([\w\s.]*)\}`)
 
 // Returns the value of a root-level key
 func (c Config) Key(key string) string { return c[defaultGroup].Key(key) }
