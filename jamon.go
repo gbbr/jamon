@@ -10,7 +10,7 @@ file may look like this:
 	[Group]
 	key=value
 Trailing comments are also allowed, and root-level keys are only accepted at the
-top of the file
+top of the file.
 */
 package jamon
 
@@ -21,39 +21,37 @@ import (
 	"strings"
 )
 
-// Internal name for group that holds settings at root-level
+// Internal name for root-level group.
 const rootGroup = "JAMON.ROOT_GROUP"
 
-// A configuration type may hold multiple categories of settings
+// A configuration holds keys and/or groups of keys.
 type Config map[string]Group
 
-// A group holds key-value pairs of settings
+// A group holds key-value pairs.
 type Group map[string]string
 
-// Returns the value of a root-level key
+// Returns the value of a root-level key.
 func (c Config) Key(key string) string { return c[rootGroup].Key(key) }
 
-// Verifies the existence of a root-level key
+// Verifies the existence of a root-level key.
 func (c Config) HasKey(key string) bool {
 	_, ok := c[rootGroup][key]
 	return ok
 }
 
-// Returns a group by name. If the group does not exist, an empty category
-// is returned. This is to avoid multiple return values in order to facilitate
-// chaining.
+// Returns a group in the configuration file or an empty one if it doesn't exist.
 func (c Config) Group(name string) Group { return c[name] }
 
-// Verifies if a category exists
+// Verifies if a group exists.
 func (c Config) HasGroup(category string) bool {
 	_, ok := c[category]
 	return ok
 }
 
-// Returns a key from a category
+// Returns a key from the group.
 func (c Group) Key(key string) string { return c[key] }
 
-// Verifies if the category has a key
+// Verifies if the group contains the key.
 func (c Group) HasKey(key string) bool {
 	_, ok := c[key]
 	return ok
@@ -62,7 +60,7 @@ func (c Group) HasKey(key string) bool {
 // Regexp for substitions
 var regexSubst = regexp.MustCompile(`\$\{([\w\s.]*)\}`)
 
-// Loads a configuration file
+// Loads a configuration file.
 func Load(filename string) (Config, error) {
 	file, err := os.Open(filename)
 	if err != nil {
