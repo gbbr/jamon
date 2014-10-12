@@ -49,6 +49,6 @@ config.Group("defaults").HasKey("key_name")
 
 #### Substitutions
 
-Substitutions only support alfanumeric values and dots, so it is recommended that keys follow the same pattern. Substitutions are replaced in order of priority: first the group is checked, and next the root level. Cross-group substitutions are not allowed.
+Substitutions only support [alfanumeric values and dots](https://github.com/gbbr/jamon/blob/master/jamon.go#L61), so it is recommended that keys follow the same pattern. Substitutions are replaced in order of priority: first the group is checked, and next the root level. Cross-group substitutions are not allowed.
 
 Hoisting not supported!
