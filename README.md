@@ -22,10 +22,6 @@ Categories are optional. You can have key/value pairs with no categories at the 
 
 All keys and values are strings by default, if you need to convert to other types, use the amazing [strconv](http://golang.org/pkg/strconv/) package from Go's standard library.
 
-#### Substitutions
-
-Substitutions only support alfanumeric values and dots, so it is recommended that keys follow the same pattern. Substitutions are replaced in order of priority: first the group is checked, and next the root level. Cross-group substitutions are not allowed.
-
 #### Usage
 
 To load a configuration file:
@@ -50,3 +46,9 @@ config.HasKey("key_name")
 // For categories
 config.Group("defaults").HasKey("key_name")
 ```
+
+#### Substitutions
+
+Substitutions only support alfanumeric values and dots, so it is recommended that keys follow the same pattern. Substitutions are replaced in order of priority: first the group is checked, and next the root level. Cross-group substitutions are not allowed.
+
+Hoisting not supported!
