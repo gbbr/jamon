@@ -2,7 +2,7 @@
 
 Jamon is a delicious configuration file parser to be used with your application. A configuration file may look like this:
 
-```objectivec
+```cmdb
 ip=127.0.0.1
 port=123
 address=${ip}:${port}
