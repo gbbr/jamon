@@ -22,7 +22,7 @@ import (
 )
 
 // Internal name for group that holds settings at root-level
-const defaultGroup = "JAMON.ROOT_GROUP"
+const rootGroup = "JAMON.ROOT_GROUP"
 
 // A configuration type may hold multiple categories of settings
 type Config map[string]Group
@@ -31,11 +31,11 @@ type Config map[string]Group
 type Group map[string]string
 
 // Returns the value of a root-level key
-func (c Config) Key(key string) string { return c[defaultGroup].Key(key) }
+func (c Config) Key(key string) string { return c[rootGroup].Key(key) }
 
 // Verifies the existence of a root-level key
 func (c Config) HasKey(key string) bool {
-	_, ok := c[defaultGroup][key]
+	_, ok := c[rootGroup][key]
 	return ok
 }
 
@@ -72,7 +72,7 @@ func Load(filename string) (Config, error) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	currentGroup := defaultGroup
+	currentGroup := rootGroup
 
 	config := Config{}
 
@@ -99,8 +99,8 @@ func Load(filename string) (Config, error) {
 					return config[currentGroup][k]
 				}
 
-				if _, ok := config[defaultGroup][k]; ok {
-					return config[defaultGroup][k]
+				if _, ok := config[rootGroup][k]; ok {
+					return config[rootGroup][k]
 				}
 
 				return r

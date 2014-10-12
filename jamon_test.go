@@ -34,7 +34,7 @@ key=${subst}${other}/val # no problem
 key2=value2
 key3=12${3}4`,
 			expected: Config{
-				defaultGroup: Group{
+				rootGroup: Group{
 					"other": "/sun",
 				},
 				"defaults": Group{
@@ -67,7 +67,7 @@ subst=my
 key=${subst}/val
 key2=value2`,
 			expected: Config{
-				defaultGroup: Group{
+				rootGroup: Group{
 					"subst": "my",
 				},
 				"defaults": Group{
@@ -92,7 +92,7 @@ override=${address}/local
 [service3]
 reset=${address}/rset`,
 			expected: Config{
-				defaultGroup: Group{
+				rootGroup: Group{
 					"ip":      "127.0.0.1",
 					"po.rt":   "23",
 					"address": "127.0.0.1:23",
@@ -118,7 +118,7 @@ subst=priority
 key=my/${subst}/val
 key2=value2`,
 			expected: Config{
-				defaultGroup: Group{
+				rootGroup: Group{
 					"subst": "my",
 				},
 				"defaults": Group{
@@ -144,7 +144,7 @@ key2=value2
 a=b
 c=d`,
 			expected: Config{
-				defaultGroup: Group{
+				rootGroup: Group{
 					"floating": "pairs",
 					"of":       "keys",
 				},
@@ -234,7 +234,7 @@ func TestJamon_parseLine(t *testing.T) {
 
 func TestJamon_Getters(t *testing.T) {
 	testConfig := &Config{
-		defaultGroup: Group{
+		rootGroup: Group{
 			"A": "B",
 			"C": "D",
 		},
