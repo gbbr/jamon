@@ -4,6 +4,7 @@ Jamon is a delicious configuration file parser to be used with your application.
 
 ```objectivec
 address=127.0.0.1:123
+base=www.myaddr.com
 
 [defaults]
 user=gabriel
@@ -11,7 +12,7 @@ email=ga@stripetree.co.uk
 
 # Comments use hash symbol
 [routes]
-api.users=/users
+api.users=${base}/users
 api.view=/users/view
 ```
 
