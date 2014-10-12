@@ -72,8 +72,9 @@ func Load(filename string) (Config, error) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	config := Config{}
 	currentGroup := defaultGroup
+
+	config := Config{}
 
 	for scanner.Scan() {
 		isGroup, value, key, skip := parseLine(scanner.Text())
