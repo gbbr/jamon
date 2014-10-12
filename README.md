@@ -27,7 +27,7 @@ All keys and values are strings by default, if you need to convert to other type
 To load a configuration file:
 
 ```go
-config := jamon.Load("filename.config")
+config, err := jamon.Load("filename.config")
 
 // For categorized keys:
 config.Group("defaults").Key("user")
