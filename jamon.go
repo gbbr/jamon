@@ -94,27 +94,17 @@ func Load(filename string) (Config, error) {
 		case config[currentGroup] == nil:
 			config[currentGroup] = make(Group)
 			fallthrough
+
 		default:
-			config[currentGroup][key] = value
-		}
-	}
-
-	return compile(config), nil
-}
-
-// Compiles the values of a configuration
-func compile(c Config) Config {
-	for group, values := range c {
-		for key, val := range values {
-			c[group][key] = regexSubst.ReplaceAllStringFunc(val, func(r string) string {
+			config[currentGroup][key] = regexSubst.ReplaceAllStringFunc(value, func(r string) string {
 				k := r[2 : len(r)-1]
 
-				if _, ok := c[group][k]; ok {
-					return c[group][k]
+				if _, ok := config[currentGroup][k]; ok {
+					return config[currentGroup][k]
 				}
 
-				if _, ok := c[defaultGroup][k]; ok {
-					return c[defaultGroup][k]
+				if _, ok := config[defaultGroup][k]; ok {
+					return config[defaultGroup][k]
 				}
 
 				return r
@@ -122,7 +112,7 @@ func compile(c Config) Config {
 		}
 	}
 
-	return c
+	return config, nil
 }
 
 // Attempts to parse an entry in the config file. The first return value specifies
