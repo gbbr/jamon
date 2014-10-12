@@ -30,7 +30,7 @@ other=/sun
 
 [defaults]
 subst=my
-key=${subst}${other}/val
+key=${subst}${other}/val # no problem
 key2=value2
 key3=12${3}4`,
 			expected: Config{
