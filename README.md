@@ -3,7 +3,9 @@
 Jamon is a delicious configuration file parser to be used with your application. A configuration file may look like this:
 
 ```objectivec
-address=127.0.0.1:123
+ip=127.0.0.1
+port=123
+address=${ip}:${port}
 base=www.myaddr.com
 
 [defaults]
