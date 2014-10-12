@@ -21,17 +21,14 @@ import (
 	"strings"
 )
 
+// Internal name for group that holds settings at root-level
+const defaultGroup = "JAMON.ROOT_GROUP"
+
 // A configuration type may hold multiple categories of settings
 type Config map[string]Group
 
 // A group holds key-value pairs of settings
 type Group map[string]string
-
-// Internal name for group that holds settings at root-level
-const defaultGroup = "JAMON.ROOT_GROUP"
-
-// Regexp for substitions
-var regexSubst = regexp.MustCompile(`\$\{([\w\s.]*)\}`)
 
 // Returns the value of a root-level key
 func (c Config) Key(key string) string { return c[defaultGroup].Key(key) }
@@ -61,6 +58,9 @@ func (c Group) HasKey(key string) bool {
 	_, ok := c[key]
 	return ok
 }
+
+// Regexp for substitions
+var regexSubst = regexp.MustCompile(`\$\{([\w\s.]*)\}`)
 
 // Loads a configuration file
 func Load(filename string) (Config, error) {
@@ -96,7 +96,7 @@ func Load(filename string) (Config, error) {
 			fallthrough
 
 		default:
-			config[currentGroup][key] = regexSubst.ReplaceAllStringFunc(value, func(r string) string {
+			compile := func(r string) string {
 				k := r[2 : len(r)-1]
 
 				if _, ok := config[currentGroup][k]; ok {
@@ -108,7 +108,10 @@ func Load(filename string) (Config, error) {
 				}
 
 				return r
-			})
+			}
+
+			val := regexSubst.ReplaceAllStringFunc(value, compile)
+			config[currentGroup][key] = val
 		}
 	}
 
