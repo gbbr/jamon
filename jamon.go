@@ -58,7 +58,7 @@ func (c Group) HasKey(key string) bool {
 }
 
 // Regexp for substitions
-var regexSubst = regexp.MustCompile(`\$\{([\w\s.]*)\}`)
+var regexSubst = regexp.MustCompile(`\$\{([^\}\{]*)\}`)
 
 // Loads a configuration file.
 func Load(filename string) (Config, error) {

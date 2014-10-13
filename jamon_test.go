@@ -14,6 +14,34 @@ func TestJamon_Load(t *testing.T) {
 	}{
 		{
 			contents: `
+BASE_URL=http://my.url
+host=localhost
+port=22
+
+[routes]
+users=${BASE_URL}/users
+register=${BASE_URL}/register
+
+[smtp]
+connect=${host}:${port}
+pipe=${connect}/pipe`,
+			expected: Config{
+				rootGroup: Group{
+					"BASE_URL": "http://my.url",
+					"host":     "localhost",
+					"port":     "22",
+				},
+				"routes": Group{
+					"users":    "http://my.url/users",
+					"register": "http://my.url/register",
+				},
+				"smtp": Group{
+					"connect": "localhost:22",
+					"pipe":    "localhost:22/pipe",
+				},
+			},
+		}, {
+			contents: `
 [defaults]
 
 key=value
