@@ -31,10 +31,10 @@ type Config map[string]Group
 type Group map[string]string
 
 // Returns the value of a root-level key.
-func (c Config) Key(key string) string { return c[rootGroup].Key(key) }
+func (c Config) Get(key string) string { return c[rootGroup].Get(key) }
 
 // Verifies the existence of a root-level key.
-func (c Config) HasKey(key string) bool {
+func (c Config) Has(key string) bool {
 	_, ok := c[rootGroup][key]
 	return ok
 }
@@ -49,10 +49,10 @@ func (c Config) HasGroup(category string) bool {
 }
 
 // Returns a key from the group.
-func (c Group) Key(key string) string { return c[key] }
+func (c Group) Get(key string) string { return c[key] }
 
 // Verifies if the group contains the key.
-func (c Group) HasKey(key string) bool {
+func (c Group) Has(key string) bool {
 	_, ok := c[key]
 	return ok
 }
