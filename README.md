@@ -30,10 +30,10 @@ To load a configuration file:
 config, err := jamon.Load("filename.config")
 
 // For categorized keys:
-config.Group("defaults").Key("user")
+config.Group("defaults").Get("user")
 
 // For root-level keys:
-config.Key("address")
+config.Get("address")
 ```
 
 Key & category getters do not return errors to allow chainability. If you specifically want to check whether a value exist boolean functions are provided, such as:
@@ -41,10 +41,10 @@ Key & category getters do not return errors to allow chainability. If you specif
 ```go
 // For root level
 config.HasGroup("category_name")
-config.HasKey("key_name")
+config.Has("key_name")
 
 // For categories
-config.Group("defaults").HasKey("key_name")
+config.Group("defaults").Has("key_name")
 ```
 
 #### Substitutions
