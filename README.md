@@ -1,4 +1,4 @@
-## jamon 
+## jamon [![status](https://sourcegraph.com/api/repos/github.com/gbbr/jamon/.badges/status.png)](https://sourcegraph.com/github.com/gbbr/jamon)
 
 Jamon is a delicious configuration file parser to be used with your application. A configuration file may look like this:
 
