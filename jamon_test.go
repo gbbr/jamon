@@ -91,6 +91,17 @@ key3=12${3}4`,
 			},
 		}, {
 			contents: `
+[defaults]
+key=something
+key2=this=${key} spaces`,
+			expected: Config{
+				"defaults": Group{
+					"key":  "something",
+					"key2": "this=something spaces",
+				},
+			},
+		}, {
+			contents: `
 subst=my
 
 [defaults]
