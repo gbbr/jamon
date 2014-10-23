@@ -53,5 +53,5 @@ Substitutions only support [alfanumeric values and dots](https://github.com/gbbr
 
 #### Notes
 
-Hoisting not supported!
+Hoisting not supported!  
 Both keys and values are 100% case-sensitive
