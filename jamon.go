@@ -66,12 +66,10 @@ func Load(filename string) (Config, error) {
 	if err != nil {
 		return Config{}, err
 	}
-
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	grp := rootGroup
-
 	cfg := Config{}
 
 	for scanner.Scan() {
