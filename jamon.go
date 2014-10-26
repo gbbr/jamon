@@ -68,12 +68,12 @@ func Load(filename string) (Config, error) {
 	}
 	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
+	scn := bufio.NewScanner(file)
 	grp := rootGroup
 	cfg := Config{}
 
-	for scanner.Scan() {
-		isGroup, val, key, skip := parseLine(scanner.Text())
+	for scn.Scan() {
+		isGroup, val, key, skip := parseLine(scn.Text())
 
 		switch {
 		case skip:
