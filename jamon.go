@@ -70,46 +70,45 @@ func Load(filename string) (Config, error) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	currentGroup := rootGroup
+	grp := rootGroup
 
-	config := Config{}
+	cfg := Config{}
 
 	for scanner.Scan() {
-		isGroup, value, key, skip := parseLine(scanner.Text())
+		isGroup, val, key, skip := parseLine(scanner.Text())
 
 		switch {
 		case skip:
 			continue
 
 		case isGroup:
-			currentGroup = value
+			grp = val
 			continue
 
-		case config[currentGroup] == nil:
-			config[currentGroup] = make(Group)
+		case cfg[grp] == nil:
+			cfg[grp] = make(Group)
 			fallthrough
 
 		default:
-			compile := func(r string) string {
+			replace := func(r string) string {
 				k := r[2 : len(r)-1]
 
-				if _, ok := config[currentGroup][k]; ok {
-					return config[currentGroup][k]
+				if _, ok := cfg[grp][k]; ok {
+					return cfg[grp][k]
 				}
 
-				if _, ok := config[rootGroup][k]; ok {
-					return config[rootGroup][k]
+				if _, ok := cfg[rootGroup][k]; ok {
+					return cfg[rootGroup][k]
 				}
 
 				return r
 			}
 
-			val := regexSubst.ReplaceAllStringFunc(value, compile)
-			config[currentGroup][key] = val
+			cfg[grp][key] = regexSubst.ReplaceAllStringFunc(val, replace)
 		}
 	}
 
-	return config, nil
+	return cfg, nil
 }
 
 // Attempts to parse an entry in the config file. The first return value specifies
