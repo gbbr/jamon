@@ -89,8 +89,7 @@ func Load(filename string) (Config, error) {
 
 		default:
 			replaceFn := func(r string) string {
-				sub := r[2 : len(r)-1]
-
+				sub := r[2 : len(r)-1] // remove ${}
 				// Is replacement in own group?
 				if _, ok := cfg[grp][sub]; ok {
 					return cfg[grp][sub]
