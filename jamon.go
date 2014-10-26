@@ -114,7 +114,7 @@ func Load(filename string) (Config, error) {
 // Attempts to parse an entry in the config file. The first return value specifies
 // whether 'value' is the name of a category or the value of a key. Skip indicates
 // whether the line was a comment or could not be parsed.
-func parseLine(line string) (isGroup bool, value, key string, skip bool) {
+func parseLine(line string) (isGroup bool, val, key string, skip bool) {
 	line = strings.SplitN(line, "#", 2)[0]
 	line = strings.Trim(line, " \t\r")
 
@@ -127,7 +127,7 @@ func parseLine(line string) (isGroup bool, value, key string, skip bool) {
 	// Is category?
 	if strings.HasPrefix(line, "[") && strings.HasSuffix(line, "]") {
 		isGroup = true
-		value = strings.Trim(line, "[]")
+		val = strings.Trim(line, "[]")
 		return
 	}
 
@@ -139,7 +139,7 @@ func parseLine(line string) (isGroup bool, value, key string, skip bool) {
 	}
 
 	key = parts[0]
-	value = strings.TrimRight(parts[1], " ")
+	val = strings.TrimRight(parts[1], " ")
 
 	return
 }
