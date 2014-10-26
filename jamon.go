@@ -93,14 +93,15 @@ func Load(filename string) (Config, error) {
 			replace := func(r string) string {
 				k := r[2 : len(r)-1]
 
+				// Is replacement in own group?
 				if _, ok := cfg[grp][k]; ok {
 					return cfg[grp][k]
 				}
-
+				// Is replacement in root group?
 				if _, ok := cfg[rootGroup][k]; ok {
 					return cfg[rootGroup][k]
 				}
-
+				// If it's not found, no change happens
 				return r
 			}
 
