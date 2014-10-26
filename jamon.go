@@ -122,14 +122,12 @@ func parseLine(line string) (isGroup bool, val, key string, skip bool) {
 		skip = true
 		return
 	}
-
 	// Is category?
 	if strings.HasPrefix(line, "[") && strings.HasSuffix(line, "]") {
 		isGroup = true
 		val = strings.Trim(line, "[]")
 		return
 	}
-
 	// Is key/value pair?
 	parts := strings.SplitN(line, "=", 2)
 	if len(parts) < 2 {
