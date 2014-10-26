@@ -135,8 +135,6 @@ func parseLine(line string) (isGroup bool, val, key string, skip bool) {
 		return
 	}
 
-	key = parts[0]
-	val = strings.TrimRight(parts[1], " ")
-
+	key, val = parts[0], strings.TrimRight(parts[1], " ")
 	return
 }
