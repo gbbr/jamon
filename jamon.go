@@ -88,22 +88,22 @@ func Load(filename string) (Config, error) {
 			fallthrough
 
 		default:
-			replace := func(r string) string {
-				k := r[2 : len(r)-1]
+			replaceFn := func(r string) string {
+				sub := r[2 : len(r)-1]
 
 				// Is replacement in own group?
-				if _, ok := cfg[grp][k]; ok {
-					return cfg[grp][k]
+				if _, ok := cfg[grp][sub]; ok {
+					return cfg[grp][sub]
 				}
 				// Is replacement in root group?
-				if _, ok := cfg[rootGroup][k]; ok {
-					return cfg[rootGroup][k]
+				if _, ok := cfg[rootGroup][sub]; ok {
+					return cfg[rootGroup][sub]
 				}
 				// If it's not found, no change happens
 				return r
 			}
 
-			cfg[grp][key] = regexSubst.ReplaceAllStringFunc(val, replace)
+			cfg[grp][key] = regexSubst.ReplaceAllStringFunc(val, replaceFn)
 		}
 	}
 
