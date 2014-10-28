@@ -31,7 +31,6 @@ config, err := jamon.Load("filename.config")
 
 // For categorized keys:
 config.Group("defaults").Get("user")
-
 // For root-level keys:
 config.Get("address")
 ```
@@ -42,7 +41,6 @@ Key & category getters do not return errors to allow chainability. If you specif
 // For root level
 config.HasGroup("category_name")
 config.Has("key_name")
-
 // For categories
 config.Group("defaults").Has("key_name")
 ```
