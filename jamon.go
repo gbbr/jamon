@@ -43,8 +43,8 @@ func (c Config) Has(key string) bool {
 func (c Config) Group(name string) Group { return c[name] }
 
 // Verifies if a group exists.
-func (c Config) HasGroup(category string) bool {
-	_, ok := c[category]
+func (c Config) HasGroup(grp string) bool {
+	_, ok := c[grp]
 	return ok
 }
 
