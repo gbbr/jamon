@@ -74,19 +74,15 @@ func Load(filename string) (Config, error) {
 
 	for scn.Scan() {
 		isGroup, val, key, skip := parseLine(scn.Text())
-
 		switch {
 		case skip:
 			continue
-
 		case isGroup:
 			grp = val
 			continue
-
 		case cfg[grp] == nil:
 			cfg[grp] = make(Group)
 			fallthrough
-
 		default:
 			replaceFn := func(r string) string {
 				sub := r[2 : len(r)-1] // remove ${}
@@ -101,11 +97,9 @@ func Load(filename string) (Config, error) {
 				// If it's not found, no change happens
 				return r
 			}
-
 			cfg[grp][key] = regexSubst.ReplaceAllStringFunc(val, replaceFn)
 		}
 	}
-
 	return cfg, nil
 }
 
@@ -115,7 +109,6 @@ func Load(filename string) (Config, error) {
 func parseLine(line string) (isGroup bool, val, key string, skip bool) {
 	line = strings.SplitN(line, "#", 2)[0]
 	line = strings.Trim(line, " \t\r")
-
 	// Is comment or empty line?
 	if len(line) == 0 {
 		skip = true
@@ -133,7 +126,6 @@ func parseLine(line string) (isGroup bool, val, key string, skip bool) {
 		skip = true
 		return
 	}
-
 	key, val = parts[0], strings.TrimRight(parts[1], " ")
 	return
 }
