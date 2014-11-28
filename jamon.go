@@ -86,15 +86,13 @@ func Load(filename string) (Config, error) {
 		default:
 			replaceFn := func(r string) string {
 				sub := r[2 : len(r)-1] // remove ${}
-				// Is replacement in own group?
+				// Is replacement in own group? Or root group?
 				if _, ok := cfg[grp][sub]; ok {
 					return cfg[grp][sub]
 				}
-				// Is replacement in root group?
 				if _, ok := cfg[rootGroup][sub]; ok {
 					return cfg[rootGroup][sub]
 				}
-				// If it's not found, no change happens
 				return r
 			}
 			cfg[grp][key] = regexSubst.ReplaceAllStringFunc(val, replaceFn)
