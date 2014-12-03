@@ -207,7 +207,7 @@ c=d`,
 			t.Errorf("Error creating temporary file: %s", err)
 		}
 
-		config, err := Load("testfile.tmp")
+		config, err := LoadFile("testfile.tmp")
 		if err != nil {
 			t.Error("Error loading file: %s", err)
 		}
@@ -224,7 +224,7 @@ c=d`,
 }
 
 func TestJamon_Load_Error(t *testing.T) {
-	_, err := Load("no-way-this-file-is-there.123")
+	_, err := LoadFile("no-way-this-file-is-there.123")
 	if err == nil {
 		t.Error("Was expecting an error when opening an odd file")
 	}

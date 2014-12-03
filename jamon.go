@@ -61,7 +61,7 @@ func (c Group) Has(key string) bool {
 var regexSubst = regexp.MustCompile(`\$\{([^\}\{]*)\}`)
 
 // Loads a configuration file.
-func Load(filename string) (Config, error) {
+func LoadFile(filename string) (Config, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		return Config{}, err
